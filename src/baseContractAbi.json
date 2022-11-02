@@ -117,13 +117,6 @@
   },
   {
     "inputs": [],
-    "name": "MAX_PROUDLIONS_PUBLICSALE_PERWALLET",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "MAX_PROUDLIONS_RESERVE_CELEBS",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
@@ -139,6 +132,13 @@
   {
     "inputs": [],
     "name": "MAX_PROUDLIONS_RESERVE_MORPHING",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_SUPPLY_FOR_ALL",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -191,6 +191,22 @@
   },
   {
     "inputs": [],
+    "name": "celebTokenId",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "erc20Name",
+    "outputs": [
+      { "internalType": "contract Gene", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "flipPreSaleState",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -228,7 +244,7 @@
         "name": "_addresses",
         "type": "address[]"
       },
-      { "internalType": "uint256[]", "name": "tokenId", "type": "uint256[]" }
+      { "internalType": "uint256[]", "name": "_tokenId", "type": "uint256[]" }
     ],
     "name": "giveAway",
     "outputs": [],
@@ -242,11 +258,18 @@
         "name": "_addresses",
         "type": "address[]"
       },
-      { "internalType": "uint256[]", "name": "tokenId", "type": "uint256[]" }
+      { "internalType": "uint256[]", "name": "_tokenId", "type": "uint256[]" }
     ],
     "name": "giveAwayCelebs",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "giveAwayTokenId",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -269,6 +292,13 @@
   {
     "inputs": [],
     "name": "legendryTokenId",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintIndex",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -335,6 +365,13 @@
   {
     "inputs": [],
     "name": "presale_price",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "publicMintAllowed",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -411,9 +448,32 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "_erc20NameAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setErc20NameAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "_addr", "type": "address" }
     ],
     "name": "setGeneAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      { "internalType": "bool", "name": "_isStake", "type": "bool" }
+    ],
+    "name": "setIsStake",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -447,9 +507,20 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "limit", "type": "uint256" }
+      { "internalType": "uint256", "name": "_rareTokenId", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_legendryTokenId",
+        "type": "uint256"
+      },
+      { "internalType": "uint256", "name": "_celebTokenId", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_giveAwayTokenId",
+        "type": "uint256"
+      }
     ],
-    "name": "setPublicSaleWalletLimit",
+    "name": "setTokenIdLimits",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

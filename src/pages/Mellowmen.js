@@ -1,5 +1,5 @@
 import { Typography, Box, Grid, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MellowmenComp from "../components/MellowmenComp";
 import Navbar from "../components/Navbar";
 import useStyles from "../styles";
@@ -13,6 +13,10 @@ import baseContractAbi from "../baseContractAbi.json";
 const Mellowmen = () => {
   const { active, account, library, connector, activate, deactivate } =
     useWeb3React();
+
+  const [tokenToStake, setTokenToStake] = useState();
+  const [userStakedTokenList, setUserStakedTokenList] = useState();
+  const [checkStakedToken, setCheckStakedToken] = useState();
 
   let web3 = new Web3(window?.web3?.currentProvider);
   if (window.ethereum) {
@@ -30,7 +34,7 @@ const Mellowmen = () => {
 
   const baseContract = new web3.eth.Contract(
     baseContractAbi,
-    "0x4F706A9C342Efad7c8Bf15A772e0681399a51aEb"
+    "0x1c38bdA9d5194D6Db0e5573874566dD7500447E3"
   );
 
   const classes = useStyles();
@@ -48,34 +52,62 @@ const Mellowmen = () => {
     console.log(totalSupply, "totalSupply");
 
     for (let i = 1; i <= totalSupply; i++) {
-      console.log(i, "jshfjks");
-
       let result = await baseContract.methods.ownerOf(i).call();
-      // console.log(result, "dfjhdjshfjks");
     }
   };
-
+  const getUserStakedToken = async () => {
+    var allStakedToken = [];
+    for (let i = 0; i < 5; i++) {
+      // have to findout the user base contract balance then replace hardcoded value
+      let record = await Contract.methods.stake(i).call();
+      if (record.isStaked) {
+        let result = await Contract.methods.userStakedToken(account, i).call();
+        allStakedToken.push(result);
+      }
+    }
+    Promise.all(allStakedToken)
+      .catch(function (err) {
+        // log that I have an error, return the entire array;
+        console.log("A promise failed to resolve", err);
+        // return arrayOfPromises;
+      })
+      .then(() => {
+        setUserStakedTokenList(allStakedToken);
+      });
+    // if (allStakedToken.length > 0) {
+    //   setUserStakedTokenList(allStakedToken);
+    // }
+  };
   useEffect(() => {
     if (account) {
+      getUserStakedToken();
       getOwnerOf();
     }
-  }, [account]);
+  }, [account, checkStakedToken]);
   const stakeToken = async () => {
-    await Contract.methods.stakeToken([7558]).send({
-      // from: account,
-      from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
+    if (!account) {
+      alert("please connect wallet first");
+      return;
+    }
+    if (!tokenToStake) {
+      alert("please enter to token number to stake");
+      return;
+    }
+    await Contract.methods.stakeToken([tokenToStake]).send({
+      from: account,
+      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
       // value: web3.utils.toWei("0", "ether"),
     });
+    setCheckStakedToken(!checkStakedToken);
   };
 
   const claimReward = async () => {
-    await Contract.methods.claimReward(7558).send({
-      // from: account,
-      from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
+    await Contract.methods.claimReward(tokenToStake).send({
+      from: account,
+      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
       // value: web3.utils.toWei("0", "ether"),
     });
   };
-
   return (
     <>
       <Box className={classes.skating}>
@@ -86,6 +118,22 @@ const Mellowmen = () => {
           <button variant="" className="solbutton mx-auto" onClick={connect}>
             Connect Wallet
           </button>
+          <input
+            type="text"
+            // value={value}
+            onChange={(e) => {
+              setTokenToStake(e.target.value);
+            }}
+            style={{
+              width: "80%",
+              background: "transparent",
+              border: "2px solid rgb(255 255 255)",
+              textAlign: "center",
+              padding: "8px",
+              marginTop: "2%",
+              color: "#fff",
+            }}
+          />
           <button variant="" className="solbutton mx-auto" onClick={stakeToken}>
             Stake Token
           </button>
@@ -150,6 +198,7 @@ const Mellowmen = () => {
                     No allowed tokens found in wallet.
                   </Typography>
                 </Typography>
+
                 <Typography
                   sx={{
                     display: "flex",
@@ -198,16 +247,31 @@ const Mellowmen = () => {
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
                     View Staked Tokens (0)
                   </Typography>
-                  <Typography
-                    sx={{
-                      marginTop: "30px",
-                      marginBottom: "400px",
-                      padding: "10px",
-                      color: "#fff",
-                    }}
-                  >
-                    No tokens currently staked.
-                  </Typography>
+                  {userStakedTokenList ? (
+                    userStakedTokenList?.map((data) => (
+                      <Typography
+                        sx={{
+                          marginTop: "10px",
+                          // marginBottom: "100px",
+                          padding: "10px",
+                          color: "#fff",
+                        }}
+                      >
+                        {data}
+                      </Typography>
+                    ))
+                  ) : (
+                    <Typography
+                      sx={{
+                        marginTop: "30px",
+                        marginBottom: "400px",
+                        padding: "10px",
+                        color: "#fff",
+                      }}
+                    >
+                      No tokens currently staked.
+                    </Typography>
+                  )}
                 </Typography>
                 <Typography
                   sx={{
