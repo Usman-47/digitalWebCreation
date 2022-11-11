@@ -6,6 +6,7 @@ import useStyles from "../styles";
 import { injected } from "../wallet/connectors";
 import { useWeb3React } from "@web3-react/core";
 import Web3 from "web3";
+import axios from "axios";
 
 import contractAbi from "../abi.json";
 import baseContractAbi from "../baseContractAbi.json";
@@ -15,9 +16,10 @@ const Mellowmen = () => {
     useWeb3React();
 
   const [tokenToStake, setTokenToStake] = useState();
+  const [userTotalNumberOfToken, setUserTotalNumberOfToken] = useState();
+  const [userTokenIds, setUserTokenIds] = useState([]);
   const [userStakedTokenList, setUserStakedTokenList] = useState();
   const [checkStakedToken, setCheckStakedToken] = useState();
-
   let web3 = new Web3(window?.web3?.currentProvider);
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
@@ -29,12 +31,12 @@ const Mellowmen = () => {
   }
   const Contract = new web3.eth.Contract(
     contractAbi,
-    "0x78Eb0c4428343AEE916B63813403Ad281176fdB0"
+    "0x557B92cb9B01442C8aacf38dCE832e65af38419B"
   );
 
   const baseContract = new web3.eth.Contract(
     baseContractAbi,
-    "0x1c38bdA9d5194D6Db0e5573874566dD7500447E3"
+    "0x9294b5Bce53C444eb78B7BD9532D809e9b9cD123"
   );
 
   const classes = useStyles();
@@ -47,21 +49,38 @@ const Mellowmen = () => {
     }
   }
 
-  const getOwnerOf = async () => {
-    let totalSupply = await baseContract.methods.totalSupply().call();
-    console.log(totalSupply, "totalSupply");
-
-    for (let i = 1; i <= totalSupply; i++) {
-      let result = await baseContract.methods.ownerOf(i).call();
+  const getUserToken = async () => {
+    let res = await axios.get(
+      `https://api.rarible.org/v0.1/items/byOwner/?owner=ETHEREUM:${account}`
+    );
+    var count = 0;
+    var tempArray = [];
+    if (res.data) {
+      res.data.items.map((data) => {
+        let specificIndex = data.contract.indexOf(":");
+        let result = data.contract.slice(specificIndex + 1);
+        if (result === "0x9294b5bce53c444eb78b7bd9532d809e9b9cd123") {
+          tempArray.push(data.tokenId);
+          count += 1;
+        }
+      });
+      setUserTotalNumberOfToken(count);
+      setUserTokenIds(tempArray);
     }
   };
+
   const getUserStakedToken = async () => {
     var allStakedToken = [];
-    for (let i = 0; i < 5; i++) {
+    let index = -1;
+    for (let i = 0; i < userTotalNumberOfToken; i++) {
       // have to findout the user base contract balance then replace hardcoded value
-      let record = await Contract.methods.stake(i).call();
+      let record = await Contract.methods.stake(userTokenIds[i]).call();
+
       if (record.isStaked) {
-        let result = await Contract.methods.userStakedToken(account, i).call();
+        index += 1;
+        let result = await Contract.methods
+          .userStakedToken(account, index)
+          .call();
         allStakedToken.push(result);
       }
     }
@@ -74,16 +93,20 @@ const Mellowmen = () => {
       .then(() => {
         setUserStakedTokenList(allStakedToken);
       });
-    // if (allStakedToken.length > 0) {
-    //   setUserStakedTokenList(allStakedToken);
-    // }
   };
+
   useEffect(() => {
     if (account) {
-      getUserStakedToken();
-      getOwnerOf();
+      getUserToken();
     }
-  }, [account, checkStakedToken]);
+  }, [account]);
+
+  useEffect(() => {
+    if (userTotalNumberOfToken) {
+      getUserStakedToken();
+    }
+  }, [userTotalNumberOfToken, checkStakedToken]);
+
   const stakeToken = async () => {
     if (!account) {
       alert("please connect wallet first");
@@ -187,16 +210,31 @@ const Mellowmen = () => {
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
                     Select Your Tokens
                   </Typography>
-                  <Typography
-                    sx={{
-                      marginTop: "30px",
-                      marginBottom: "400px",
-                      padding: "10px",
-                      color: "#fff",
-                    }}
-                  >
-                    No allowed tokens found in wallet.
-                  </Typography>
+                  {userTokenIds.length > 0 ? (
+                    userTokenIds?.map((data) => (
+                      <Typography
+                        sx={{
+                          marginTop: "30px",
+                          // marginBottom: "400px",
+                          padding: "10px",
+                          color: "#fff",
+                        }}
+                      >
+                        {data}
+                      </Typography>
+                    ))
+                  ) : (
+                    <Typography
+                      sx={{
+                        marginTop: "30px",
+                        marginBottom: "400px",
+                        padding: "10px",
+                        color: "#fff",
+                      }}
+                    >
+                      No allowed tokens found in wallet.
+                    </Typography>
+                  )}
                 </Typography>
 
                 <Typography
@@ -247,7 +285,7 @@ const Mellowmen = () => {
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
                     View Staked Tokens (0)
                   </Typography>
-                  {userStakedTokenList ? (
+                  {userStakedTokenList?.length > 0 ? (
                     userStakedTokenList?.map((data) => (
                       <Typography
                         sx={{
