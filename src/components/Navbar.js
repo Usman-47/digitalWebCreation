@@ -18,10 +18,20 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import styles from "./Navbar.style";
 import CloseIcon from "@mui/icons-material/Close";
 import { HashLink as Link } from "react-router-hash-link";
+import { injected } from "../wallet/connectors";
+import { useWeb3React } from "@web3-react/core";
 
 const drawerWidth = "100%";
 
 function Navbar(props) {
+  const { activate } = useWeb3React();
+  async function connect() {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
   const { classes } = props;
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -193,6 +203,17 @@ function Navbar(props) {
                   CONTACT
                 </Link>
               </Button>
+              <br />
+              <Button
+                sx={{
+                  fontWeight: "800",
+                  fontSize: "16px",
+                  color: "#fff",
+                }}
+                onClick={connect}
+              >
+                Connect to wallet
+              </Button>
             </ListItemText>
           </ListItemButton>
         </ListItem>
@@ -226,11 +247,11 @@ function Navbar(props) {
             sx={{
               flexGrow: 1,
               display: { xs: "none", sm: "block" },
-              paddingLeft: { xl: "52px", lg: "52px", md: "2px" },
+              // paddingLeft: { xl: "52px", lg: "52px", md: "2px" },
               paddingTop: "10px",
             }}
           >
-            <img src={logo} />
+            <img src={logo} height='70px' width='100px' />
           </Typography>
           <IconButton color='inherit' size='small' aria-label='open drawer'>
             <MenuIcon
@@ -464,6 +485,22 @@ function Navbar(props) {
                   CONTACT
                 </Typography>
               </Link>
+            </Button>
+            <Button onClick={connect}>
+              <Typography
+                sx={{
+                  fontWeight: "800",
+                  fontSize: { xl: "16px", lg: "14px", md: "10px" },
+                  paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                  color: "#fff",
+                  "&:hover": {
+                    color: "#fff",
+                  },
+                  fontFamily: "Raleway-bolder",
+                }}
+              >
+                Connect Wallet
+              </Typography>
             </Button>
           </Box>
         </Toolbar>
