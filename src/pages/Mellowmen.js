@@ -226,7 +226,7 @@ const Mellowmen = () => {
   // const handleClose = () => setModal(false);
   return (
     <>
-      {!account && (
+      {/* {!account && (
         <Modal
           open={modal}
           // onClose={handleClose}
@@ -239,28 +239,27 @@ const Mellowmen = () => {
             </Button>
           </Box>
         </Modal>
-      )}
+      )} */}
       <Box className={classes.skating}>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={open}
         >
-          <CircularProgress color="inherit" />
+          <CircularProgress color='inherit' />
         </Backdrop>
-        <div
-          style={{ backgroundColor: "rgba(0,0,0,0.5)", paddingBottom: "50px" }}
-        >
-          <Navbar connect="Connect to Wallet" />
+        {/* backgroundColor: "rgba(0,0,0,0.5)", this goes below*/}
+        <div style={{ paddingBottom: "50px" }}>
+          <Navbar connect='Connect Wallet' />
 
           <MellowmenComp
             title1={`Your wallet : ${
               account ? account.substring(0, 10) + "..." : "?"
             }`}
-            title2="RoobChronicle Staked :"
-            title3="Earnings :"
-            title4="Reward rate :"
-            subtitle1="0.000000"
-            subtitle2="15 ROOB/day"
+            title2='RoobChronicle Staked :'
+            title3='Earnings :'
+            title4='Reward rate :'
+            subtitle1='0.000000'
+            subtitle2='15 ROOB/day'
           />
           <Grid
             container
@@ -304,13 +303,13 @@ const Mellowmen = () => {
                             <div style={{ position: "relative" }}>
                               <img
                                 src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data.tokenId}.png`}
-                                height="40%"
-                                width="50%"
+                                height='40%'
+                                width='50%'
                                 style={{ borderRadius: "10px" }}
                               />
                               <Checkbox
                                 {...label}
-                                color="success"
+                                color='success'
                                 name={data.tokenId}
                                 sx={{
                                   position: "absolute",
@@ -332,8 +331,8 @@ const Mellowmen = () => {
                             </Typography>
                             {idx === index ? (
                               <button
-                                variant=""
-                                className="solbutton mx-auto"
+                                variant=''
+                                className='solbutton mx-auto'
                                 onClick={stakeToken}
                                 style={{
                                   backgroundColor: "#04212B",
@@ -379,7 +378,7 @@ const Mellowmen = () => {
                   }}
                 >
                   <Button
-                    variant="contained"
+                    variant='contained'
                     onClick={stakeMultipleToken}
                     sx={{
                       marginBottom: "15px",
@@ -428,8 +427,8 @@ const Mellowmen = () => {
                           >
                             <img
                               src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
-                              height="40%"
-                              width="50%"
+                              height='40%'
+                              width='50%'
                               style={{ borderRadius: "10px" }}
                             />
 
@@ -445,8 +444,8 @@ const Mellowmen = () => {
                             </Typography>
                             {claimIdx === index ? (
                               <button
-                                variant=""
-                                className="solbutton mx-auto"
+                                variant=''
+                                className='solbutton mx-auto'
                                 onClick={claimReward}
                                 style={{
                                   backgroundColor: "#04212B",
@@ -491,7 +490,7 @@ const Mellowmen = () => {
                   }}
                 >
                   <Button
-                    variant="contained"
+                    variant='contained'
                     sx={{
                       marginBottom: "15px",
                       marginRight: "15px",

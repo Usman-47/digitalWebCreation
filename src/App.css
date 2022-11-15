@@ -50,7 +50,7 @@ Form {
   width: 500px;
 }
 .btnSub {
-  width: 440px;
+  width: 460px;
   margin-top: 30px;
   height: 50px;
 }
@@ -61,10 +61,22 @@ Form {
     width: 300px;
   }
   .btnSub {
-    width: 250px;
+    width: 270px;
     margin-top: 30px;
   }
 }
 .field {
   padding: 3px;
+}
+#form-textarea-control-opinion {
+  background-color: #04212b;
+  color: #5c8d9d;
+}
+#form-input-control-last-name {
+  background-color: #04212b;
+  color: #5c8d9d;
+}
+#form-input-control-email {
+  background-color: #04212b;
+  color: #5c8d9d;
 }

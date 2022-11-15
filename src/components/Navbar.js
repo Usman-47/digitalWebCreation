@@ -203,6 +203,24 @@ function Navbar(props) {
                   CONTACT
                 </Link>
               </Button>
+              {props.connect && (
+                <Button onClick={connect}>
+                  <Typography
+                    sx={{
+                      fontWeight: "800",
+                      fontSize: { xl: "16px", lg: "14px", md: "10px" },
+                      paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                      color: "#fff",
+                      "&:hover": {
+                        color: "#fff",
+                      },
+                      fontFamily: "Raleway-bolder",
+                    }}
+                  >
+                    {props.connect}
+                  </Typography>
+                </Button>
+              )}
             </ListItemText>
           </ListItemButton>
         </ListItem>
@@ -240,7 +258,7 @@ function Navbar(props) {
               paddingTop: "10px",
             }}
           >
-            <img src={logo} height='70px' width='100px' />
+            <img src={logo} height='70px' width='130px' />
           </Typography>
           <IconButton color='inherit' size='small' aria-label='open drawer'>
             <MenuIcon
@@ -475,6 +493,24 @@ function Navbar(props) {
                 </Typography>
               </Link>
             </Button>
+            {props.connect && (
+              <Button onClick={connect}>
+                <Typography
+                  sx={{
+                    fontWeight: "800",
+                    fontSize: { xl: "16px", lg: "14px", md: "10px" },
+                    paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#04212B",
+                    "&:hover": {
+                      color: "#fff",
+                    },
+                    fontFamily: "Raleway-bolder",
+                  }}
+                >
+                  {props.connect}
+                </Typography>
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>

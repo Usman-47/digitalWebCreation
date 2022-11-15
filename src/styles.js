@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     // width: "100%",
-    height: "100%",
+    height: "100vh",
   },
   heroTitle: {
     color: "#04212b",

@@ -3,9 +3,9 @@ import emailjs from "emailjs-com";
 import { Form, Input, TextArea, Button } from "semantic-ui-react";
 import Swal from "sweetalert2";
 import "../App.css";
-const SERVICE_ID = "service_sry7y5o";
-const TEMPLATE_ID = "template_kfby3ih";
-const USER_ID = "tva6ditiKq5DHVfJX";
+const SERVICE_ID = "service_wo3wwhj";
+const TEMPLATE_ID = "template_lp4flwg";
+const USER_ID = "FbBrYI8AW11NRniNQ";
 const App = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -34,33 +34,36 @@ const App = () => {
         <Form.Field
           id='form-input-control-email'
           control={Input}
-          name='from_email'
+          name='email'
           placeholder='Email…'
           required
           icon='mail'
           iconPosition='left'
+          className='field'
         />
         <Form.Field
           id='form-input-control-last-name'
           control={Input}
-          name='from_name'
+          name='name'
           placeholder='Name…'
           required
           icon='user circle'
           iconPosition='left'
+          className='field'
         />
         <Form.Field
           id='form-textarea-control-opinion'
           control={TextArea}
-          name='message'
+          name='msg'
           placeholder='Message…'
           required
+          className='field'
         />
         <Button
           type='submit'
           color='green'
           className='btnSub'
-          style={{ backgroundColor: "#4efd93" }}
+          style={{ backgroundColor: "#4efd93", borderRadius: "15px" }}
         >
           Submit
         </Button>
