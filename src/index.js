@@ -13,6 +13,7 @@ import { Web3ReactProvider } from "@web3-react/core";
 import Web3 from "web3";
 import { Web3Provider } from "@ethersproject/providers";
 import Mellowmen from "./pages/Mellowmen";
+import "semantic-ui-css/semantic.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
