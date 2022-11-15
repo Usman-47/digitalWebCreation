@@ -88,13 +88,10 @@ const Mellowmen = () => {
     let res = await axios.get(
       `https://api.rarible.org/v0.1/items/byOwner/?owner=ETHEREUM:${account}`
     );
-    // console.log(res, "hhhhhhhhhhhhhhhh");
     var count = 0;
     var tempArray = [];
     if (res.data) {
-      console.log(res.data, "gggggggggggggggggg");
       res.data.items.map((data) => {
-        console.log(data, "sdfsdjfjs");
         let specificIndex = data.contract.indexOf(":");
         let result = data.contract.slice(specificIndex + 1);
         if (result === "0x9294b5bce53c444eb78b7bd9532d809e9b9cd123") {
@@ -147,6 +144,16 @@ const Mellowmen = () => {
   }, [account]);
 
   useEffect(() => {
+    if (userStakedTokenList && userTotalNumberOfToken) {
+      setUserTokenData((data) =>
+        data.filter(
+          (filterData) => !userStakedTokenList.includes(filterData.tokenId)
+        )
+      );
+    }
+  }, [userTotalNumberOfToken, userStakedTokenList]);
+
+  useEffect(() => {
     if (userTotalNumberOfToken) {
       getUserStakedToken();
     }
@@ -161,7 +168,24 @@ const Mellowmen = () => {
       alert("please enter to token number to stake");
       return;
     }
-    await Contract.methods.stakeToken([tokenToStake]).send({
+    await Contract.methods.stakeToken(selected).send({
+      from: account,
+      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
+      // value: web3.utils.toWei("0", "ether"),
+    });
+    setCheckStakedToken(!checkStakedToken);
+  };
+
+  const stakeMultipleToken = async () => {
+    if (!account) {
+      alert("please connect wallet first");
+      return;
+    }
+    if (!selected || selected?.length == 0) {
+      alert("please Select token to stake");
+      return;
+    }
+    await Contract.methods.stakeToken(selected).send({
       from: account,
       // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
       // value: web3.utils.toWei("0", "ether"),
@@ -181,7 +205,7 @@ const Mellowmen = () => {
     });
   };
   const handleStake = (data, index) => {
-    setTokenToStake(data.tokenId);
+    setTokenToStake([data.tokenId]);
     setIdx(index);
     // setStakeBtn(!stakeBtn);
   };
@@ -200,15 +224,14 @@ const Mellowmen = () => {
     }
   }
   // const handleClose = () => setModal(false);
-  console.log(selected, "hello");
   return (
     <>
       {!account && (
         <Modal
           open={modal}
           // onClose={handleClose}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
             <Button onClick={connect}>
@@ -222,20 +245,22 @@ const Mellowmen = () => {
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={open}
         >
-          <CircularProgress color='inherit' />
+          <CircularProgress color="inherit" />
         </Backdrop>
         <div
           style={{ backgroundColor: "rgba(0,0,0,0.5)", paddingBottom: "50px" }}
         >
-          <Navbar connect='Connect to Wallet' />
+          <Navbar connect="Connect to Wallet" />
 
           <MellowmenComp
-            title1='Your wallet :'
-            title2='RoobChronicle Staked :'
-            title3='Earnings :'
-            title4='Reward rate :'
-            subtitle1='0.000000'
-            subtitle2='15 ROOB/day'
+            title1={`Your wallet : ${
+              account ? account.substring(0, 10) + "..." : "?"
+            }`}
+            title2="RoobChronicle Staked :"
+            title3="Earnings :"
+            title4="Reward rate :"
+            subtitle1="0.000000"
+            subtitle2="15 ROOB/day"
           />
           <Grid
             container
@@ -279,13 +304,13 @@ const Mellowmen = () => {
                             <div style={{ position: "relative" }}>
                               <img
                                 src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data.tokenId}.png`}
-                                height='40%'
-                                width='50%'
+                                height="40%"
+                                width="50%"
                                 style={{ borderRadius: "10px" }}
                               />
                               <Checkbox
                                 {...label}
-                                color='success'
+                                color="success"
                                 name={data.tokenId}
                                 sx={{
                                   position: "absolute",
@@ -307,8 +332,8 @@ const Mellowmen = () => {
                             </Typography>
                             {idx === index ? (
                               <button
-                                variant=''
-                                className='solbutton mx-auto'
+                                variant=""
+                                className="solbutton mx-auto"
                                 onClick={stakeToken}
                                 style={{
                                   backgroundColor: "#04212B",
@@ -354,7 +379,8 @@ const Mellowmen = () => {
                   }}
                 >
                   <Button
-                    variant='contained'
+                    variant="contained"
+                    onClick={stakeMultipleToken}
                     sx={{
                       marginBottom: "15px",
                       marginLeft: "15px",
@@ -365,7 +391,7 @@ const Mellowmen = () => {
                       },
                     }}
                   >
-                    Stake Token ({selected.length})
+                    Stake Token ({selected ? selected?.length : "?"})
                   </Button>
                 </Typography>
               </Box>
@@ -387,7 +413,8 @@ const Mellowmen = () => {
               >
                 <Typography>
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
-                    View Staked Tokens (0)
+                    View Staked Tokens:{" "}
+                    {userStakedTokenList ? userStakedTokenList?.length : "?"}
                   </Typography>
                   <Grid container xl={12} lg={12} md={12} sm={12} xs={12}>
                     {userStakedTokenList?.length > 0 ? (
@@ -401,8 +428,8 @@ const Mellowmen = () => {
                           >
                             <img
                               src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
-                              height='40%'
-                              width='50%'
+                              height="40%"
+                              width="50%"
                               style={{ borderRadius: "10px" }}
                             />
 
@@ -418,8 +445,8 @@ const Mellowmen = () => {
                             </Typography>
                             {claimIdx === index ? (
                               <button
-                                variant=''
-                                className='solbutton mx-auto'
+                                variant=""
+                                className="solbutton mx-auto"
                                 onClick={claimReward}
                                 style={{
                                   backgroundColor: "#04212B",
@@ -464,7 +491,7 @@ const Mellowmen = () => {
                   }}
                 >
                   <Button
-                    variant='contained'
+                    variant="contained"
                     sx={{
                       marginBottom: "15px",
                       marginRight: "15px",
