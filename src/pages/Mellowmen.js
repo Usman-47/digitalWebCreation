@@ -5,6 +5,8 @@ import {
   Button,
   Backdrop,
   CircularProgress,
+  Checkbox,
+  Modal,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MellowmenComp from "../components/MellowmenComp";
@@ -17,6 +19,23 @@ import axios from "axios";
 
 import contractAbi from "../abi.json";
 import baseContractAbi from "../baseContractAbi.json";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "rgba(0,0,0,.3)",
+  backdropFilter: "blur(10px)",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  display: "flex",
+  justifyContent: "center",
+};
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const Mellowmen = () => {
   const { active, account, library, connector, activate, deactivate } =
@@ -32,6 +51,8 @@ const Mellowmen = () => {
   const [idx, setIdx] = useState();
   const [claimIdx, setClaimIdx] = useState();
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState([]);
+  const [modal, setModal] = useState(true);
 
   let web3 = new Web3(window?.web3?.currentProvider);
   if (window.ethereum) {
@@ -60,6 +81,7 @@ const Mellowmen = () => {
     } catch (ex) {
       console.log(ex);
     }
+    setModal(false);
   }
 
   const getUserToken = async () => {
@@ -70,7 +92,7 @@ const Mellowmen = () => {
     var count = 0;
     var tempArray = [];
     if (res.data) {
-      // console.log(res.data, "gggggggggggggggggg");
+      console.log(res.data, "gggggggggggggggggg");
       res.data.items.map((data) => {
         let specificIndex = data.contract.indexOf(":");
         let result = data.contract.slice(specificIndex + 1);
@@ -167,8 +189,33 @@ const Mellowmen = () => {
     setClaimIdx(index);
   };
 
+  function onChange(event, item) {
+    if (event.target.checked) {
+      setSelected([...selected, event.target.name]);
+    } else {
+      setSelected((data) =>
+        data.filter((currItem) => currItem !== event?.target?.name)
+      );
+    }
+  }
+  // const handleClose = () => setModal(false);
+  console.log(selected, "hello");
   return (
     <>
+      {!account && (
+        <Modal
+          open={modal}
+          // onClose={handleClose}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <Box sx={style}>
+            <Button onClick={connect}>
+              <Typography>Connect Wallet</Typography>
+            </Button>
+          </Box>
+        </Modal>
+      )}
       <Box className={classes.skating}>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -179,16 +226,15 @@ const Mellowmen = () => {
         <div
           style={{ backgroundColor: "rgba(0,0,0,0.5)", paddingBottom: "50px" }}
         >
-          <Navbar />
+          <Navbar connect='Connect to Wallet' />
 
           <MellowmenComp
-            title1='Your wallet'
-            title2='RoobChronicle Staked'
-            subtitle='5MpA. . . .v7Wc929'
+            title1='Your wallet :'
+            title2='RoobChronicle Staked :'
             title3='Earnings :'
-            title4='Reward rate'
+            title4='Reward rate :'
             subtitle1='0.000000'
-            subtitle2='10 ROOB/day'
+            subtitle2='15 ROOB/day'
           />
           <Grid
             container
@@ -229,13 +275,25 @@ const Mellowmen = () => {
                       userTokenData?.map((data, index) => (
                         <Grid item xl={4} lg={4} md={4} sm={6} xs={12}>
                           <div onClick={() => handleStake(data, index)}>
-                            <img
-                              src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data.tokenId}.png`}
-                              height='40%'
-                              width='50%'
-                              style={{ borderRadius: "10px" }}
-                            />
-
+                            <div style={{ position: "relative" }}>
+                              <img
+                                src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data.tokenId}.png`}
+                                height='40%'
+                                width='50%'
+                                style={{ borderRadius: "10px" }}
+                              />
+                              <Checkbox
+                                {...label}
+                                color='success'
+                                name={data.tokenId}
+                                sx={{
+                                  position: "absolute",
+                                  top: "0%",
+                                  left: "0%",
+                                }}
+                                onChange={(event) => onChange(event)}
+                              />
+                            </div>
                             <Typography
                               sx={{
                                 // marginTop: "30px",
@@ -306,7 +364,7 @@ const Mellowmen = () => {
                       },
                     }}
                   >
-                    Stake Token (0)
+                    Stake Token ({selected.length})
                   </Button>
                 </Typography>
               </Box>
@@ -326,7 +384,7 @@ const Mellowmen = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ width: "50%" }}>
+                <Typography>
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
                     View Staked Tokens (0)
                   </Typography>
@@ -338,6 +396,7 @@ const Mellowmen = () => {
                             onClick={() => {
                               handleClaim(data, index);
                             }}
+                            style={{ position: "relative" }}
                           >
                             <img
                               src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
@@ -345,6 +404,7 @@ const Mellowmen = () => {
                               width='50%'
                               style={{ borderRadius: "10px" }}
                             />
+
                             <Typography
                               sx={{
                                 marginTop: "10px",

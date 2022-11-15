@@ -25,11 +25,11 @@ const MellowmenComp = (props) => {
           <Typography sx={{ color: "#fff" }}>{props.title1}</Typography>
           <Typography sx={{ color: "#fff" }}>{props.title2}</Typography>
         </Grid>
-        <Grid item lg={3} md={3} sm={3}>
+        {/* <Grid item lg={3} md={3} sm={3}>
           <Typography sx={{ fontWeight: "bold", color: "#fff" }}>
             {props.subtitle}
           </Typography>
-        </Grid>
+        </Grid> */}
         <Grid item lg={3} md={3} sm={3}>
           <Typography sx={{ color: "#fff" }}>{props.title3}</Typography>
           <Typography sx={{ color: "#fff" }}>{props.title4}</Typography>

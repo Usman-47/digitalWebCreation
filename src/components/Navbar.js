@@ -203,17 +203,6 @@ function Navbar(props) {
                   CONTACT
                 </Link>
               </Button>
-              <br />
-              <Button
-                sx={{
-                  fontWeight: "800",
-                  fontSize: "16px",
-                  color: "#fff",
-                }}
-                onClick={connect}
-              >
-                Connect to wallet
-              </Button>
             </ListItemText>
           </ListItemButton>
         </ListItem>
@@ -485,22 +474,6 @@ function Navbar(props) {
                   CONTACT
                 </Typography>
               </Link>
-            </Button>
-            <Button onClick={connect}>
-              <Typography
-                sx={{
-                  fontWeight: "800",
-                  fontSize: { xl: "16px", lg: "14px", md: "10px" },
-                  paddingRight: { xl: "40px", lg: "20px", md: "1px" },
-                  color: "#fff",
-                  "&:hover": {
-                    color: "#fff",
-                  },
-                  fontFamily: "Raleway-bolder",
-                }}
-              >
-                Connect Wallet
-              </Typography>
             </Button>
           </Box>
         </Toolbar>
