@@ -325,7 +325,7 @@ const Mellowmen = () => {
                     Select Your Tokens
                   </Typography>
                   <Grid container xl={12} lg={12} md={12} sm={12} xs={12}>
-                    {userTokenData.length > 0 ? (
+                    {userTokenData?.length > 0 ? (
                       userTokenData?.map((data, index) => (
                         <Grid item xl={4} lg={4} md={4} sm={6} xs={12}>
                           <div onClick={() => handleStake(data, index)}>
