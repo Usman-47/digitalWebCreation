@@ -255,7 +255,6 @@ const Mellowmen = () => {
       );
     }
   }
-  console.log(selectedClaim, "djkfghkjdfhk");
   return (
     <>
       {!account && (
