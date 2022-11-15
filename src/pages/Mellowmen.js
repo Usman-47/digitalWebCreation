@@ -57,6 +57,7 @@ const Mellowmen = () => {
     var tempArray = [];
     if (res.data) {
       res.data.items.map((data) => {
+        console.log(data, "sdfsdjfjs");
         let specificIndex = data.contract.indexOf(":");
         let result = data.contract.slice(specificIndex + 1);
         if (result === "0x9294b5bce53c444eb78b7bd9532d809e9b9cd123") {
