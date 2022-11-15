@@ -52,7 +52,9 @@ const Mellowmen = () => {
   const [claimIdx, setClaimIdx] = useState();
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [selectedClaim, setSelectedClaim] = useState([]);
   const [modal, setModal] = useState(true);
+  const [userUnlaimedReward, setUserUnlaimedReward] = useState();
 
   let web3 = new Web3(window?.web3?.currentProvider);
   if (window.ethereum) {
@@ -112,9 +114,8 @@ const Mellowmen = () => {
     var allStakedToken = [];
     let index = -1;
     for (let i = 0; i < userTotalNumberOfToken; i++) {
-      // have to findout the user base contract balance then replace hardcoded value
       let record = await Contract.methods
-        .stake(userTokenData[i].tokenId)
+        .stake(userTokenData[i]?.tokenId)
         .call();
 
       if (record.isStaked) {
@@ -136,6 +137,13 @@ const Mellowmen = () => {
       });
   };
 
+  const checkUserReward = async () => {
+    let reward = await Contract.methods
+      .getUnclaimedRewardsAmountForSloothRoob(userStakedTokenList)
+      .call();
+    setUserUnlaimedReward(reward);
+  };
+
   useEffect(() => {
     if (account) {
       setOpen(true);
@@ -145,6 +153,7 @@ const Mellowmen = () => {
 
   useEffect(() => {
     if (userStakedTokenList && userTotalNumberOfToken) {
+      checkUserReward();
       setUserTokenData((data) =>
         data.filter(
           (filterData) => !userStakedTokenList.includes(filterData.tokenId)
@@ -187,8 +196,6 @@ const Mellowmen = () => {
     }
     await Contract.methods.stakeToken(selected).send({
       from: account,
-      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
-      // value: web3.utils.toWei("0", "ether"),
     });
     setCheckStakedToken(!checkStakedToken);
   };
@@ -198,23 +205,38 @@ const Mellowmen = () => {
       alert("No token selected");
       return;
     }
+    if (!userUnlaimedReward || userUnlaimedReward <= 0) {
+      alert("You cannot claim reward, until the reward is greater then zero");
+      return;
+    }
     await Contract.methods.claimRewardsForSloothRoob([tokenToClaim]).send({
       from: account,
-      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
-      // value: web3.utils.toWei("0", "ether"),
+    });
+  };
+
+  const claimMultiTokenReward = async () => {
+    if (!selectedClaim) {
+      alert("No token selected");
+      return;
+    }
+    if (!userUnlaimedReward || userUnlaimedReward <= 0) {
+      alert("You cannot claim reward, until the reward is greater then zero");
+      return;
+    }
+    await Contract.methods.claimRewardsForSloothRoob(selectedClaim).send({
+      from: account,
     });
   };
   const handleStake = (data, index) => {
     setTokenToStake([data.tokenId]);
     setIdx(index);
-    // setStakeBtn(!stakeBtn);
   };
   const handleClaim = (data, index) => {
     setTokenToClaim(data);
     setClaimIdx(index);
   };
 
-  function onChange(event, item) {
+  function onChange(event) {
     if (event.target.checked) {
       setSelected([...selected, event.target.name]);
     } else {
@@ -223,13 +245,21 @@ const Mellowmen = () => {
       );
     }
   }
-  // const handleClose = () => setModal(false);
+
+  function onChangeClaim(event) {
+    if (event.target.checked) {
+      setSelectedClaim([...selectedClaim, event.target.name]);
+    } else {
+      setSelectedClaim((data) =>
+        data?.filter((currItem) => currItem !== event?.target?.name)
+      );
+    }
+  }
   return (
     <>
       {/* {!account && (
         <Modal
           open={modal}
-          // onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -256,9 +286,9 @@ const Mellowmen = () => {
               account ? account.substring(0, 10) + "..." : "?"
             }`}
             title2='RoobChronicle Staked :'
-            title3='Earnings :'
+            title3={`Earnings: `}
             title4='Reward rate :'
-            subtitle1='0.000000'
+            subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
             subtitle2='15 ROOB/day'
           />
           <Grid
@@ -272,8 +302,6 @@ const Mellowmen = () => {
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Box
                 sx={{
-                  // width: "70%",
-
                   height: "100%",
                   backgroundColor: "rgba(0,0,0,.3)",
                   backdropFilter: "blur(10px)",
@@ -296,7 +324,7 @@ const Mellowmen = () => {
                     Select Your Tokens
                   </Typography>
                   <Grid container xl={12} lg={12} md={12} sm={12} xs={12}>
-                    {userTokenData.length > 0 ? (
+                    {userTokenData?.length > 0 ? (
                       userTokenData?.map((data, index) => (
                         <Grid item xl={4} lg={4} md={4} sm={6} xs={12}>
                           <div onClick={() => handleStake(data, index)}>
@@ -425,12 +453,25 @@ const Mellowmen = () => {
                             }}
                             style={{ position: "relative" }}
                           >
-                            <img
-                              src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
-                              height='40%'
-                              width='50%'
-                              style={{ borderRadius: "10px" }}
-                            />
+                            <div style={{ position: "relative" }}>
+                              <img
+                                src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
+                                height='40%'
+                                width='50%'
+                                style={{ borderRadius: "10px" }}
+                              />{" "}
+                              <Checkbox
+                                {...label}
+                                color='success'
+                                name={data}
+                                sx={{
+                                  position: "absolute",
+                                  top: "0%",
+                                  left: "0%",
+                                }}
+                                onChange={(event) => onChangeClaim(event)}
+                              />
+                            </div>
 
                             <Typography
                               sx={{
@@ -491,6 +532,7 @@ const Mellowmen = () => {
                 >
                   <Button
                     variant='contained'
+                    onClick={claimMultiTokenReward}
                     sx={{
                       marginBottom: "15px",
                       marginRight: "15px",
@@ -501,7 +543,7 @@ const Mellowmen = () => {
                       },
                     }}
                   >
-                    Unstake Token (0)
+                    Claim Reward ({selectedClaim ? selectedClaim?.length : "0"})
                   </Button>
                 </Typography>
               </Box>
