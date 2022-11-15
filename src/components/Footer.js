@@ -232,7 +232,9 @@ const Footer = () => {
             <Grid item md={1.2} xs={3}>
               <div
                 onClick={() =>
-                  openInNewTab("https://digitalwebcreation.medium.com/")
+                  openInNewTab(
+                    "https://opensea.io/collection/official-sloth-roob"
+                  )
                 }
               >
                 {/* <CardMedia
@@ -251,9 +253,9 @@ const Footer = () => {
             </Grid>
             <Grid item md={1.2} xs={3}>
               <div
-                onClick={() =>
-                  openInNewTab("https://digitalwebcreation.medium.com/")
-                }
+              // onClick={() =>
+              //   openInNewTab("https://digitalwebcreation.medium.com/")
+              // }
               >
                 {/* <CardMedia
                   image={opensea}
