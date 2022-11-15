@@ -53,6 +53,7 @@ const Mellowmen = () => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [modal, setModal] = useState(true);
+  const [userUnlaimedReward, setUserUnlaimedReward] = useState();
 
   let web3 = new Web3(window?.web3?.currentProvider);
   if (window.ethereum) {
@@ -112,9 +113,8 @@ const Mellowmen = () => {
     var allStakedToken = [];
     let index = -1;
     for (let i = 0; i < userTotalNumberOfToken; i++) {
-      // have to findout the user base contract balance then replace hardcoded value
       let record = await Contract.methods
-        .stake(userTokenData[i].tokenId)
+        .stake(userTokenData[i]?.tokenId)
         .call();
 
       if (record.isStaked) {
@@ -136,6 +136,13 @@ const Mellowmen = () => {
       });
   };
 
+  const checkUserReward = async () => {
+    let reward = await Contract.methods
+      .getUnclaimedRewardsAmountForSloothRoob(userStakedTokenList)
+      .call();
+    setUserUnlaimedReward(reward);
+  };
+
   useEffect(() => {
     if (account) {
       setOpen(true);
@@ -145,6 +152,7 @@ const Mellowmen = () => {
 
   useEffect(() => {
     if (userStakedTokenList && userTotalNumberOfToken) {
+      checkUserReward();
       setUserTokenData((data) =>
         data.filter(
           (filterData) => !userStakedTokenList.includes(filterData.tokenId)
@@ -196,6 +204,10 @@ const Mellowmen = () => {
   const claimReward = async () => {
     if (!tokenToClaim) {
       alert("No token selected");
+      return;
+    }
+    if (!userUnlaimedReward || userUnlaimedReward <= 0) {
+      alert("You cannot claim reward, until the reward is greater then zero");
       return;
     }
     await Contract.methods.claimRewardsForSloothRoob([tokenToClaim]).send({
@@ -257,9 +269,9 @@ const Mellowmen = () => {
               account ? account.substring(0, 10) + "..." : "?"
             }`}
             title2="RoobChronicle Staked :"
-            title3="Earnings :"
+            title3={`Earnings: `}
             title4="Reward rate :"
-            subtitle1="0.000000"
+            subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
             subtitle2="15 ROOB/day"
           />
           <Grid
