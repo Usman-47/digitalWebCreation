@@ -52,6 +52,7 @@ const Mellowmen = () => {
   const [claimIdx, setClaimIdx] = useState();
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [selectedClaim, setSelectedClaim] = useState([]);
   const [modal, setModal] = useState(true);
   const [userUnlaimedReward, setUserUnlaimedReward] = useState();
 
@@ -195,8 +196,6 @@ const Mellowmen = () => {
     }
     await Contract.methods.stakeToken(selected).send({
       from: account,
-      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
-      // value: web3.utils.toWei("0", "ether"),
     });
     setCheckStakedToken(!checkStakedToken);
   };
@@ -212,21 +211,32 @@ const Mellowmen = () => {
     }
     await Contract.methods.claimRewardsForSloothRoob([tokenToClaim]).send({
       from: account,
-      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
-      // value: web3.utils.toWei("0", "ether"),
+    });
+  };
+
+  const claimMultiTokenReward = async () => {
+    if (!selectedClaim) {
+      alert("No token selected");
+      return;
+    }
+    if (!userUnlaimedReward || userUnlaimedReward <= 0) {
+      alert("You cannot claim reward, until the reward is greater then zero");
+      return;
+    }
+    await Contract.methods.claimRewardsForSloothRoob(selectedClaim).send({
+      from: account,
     });
   };
   const handleStake = (data, index) => {
     setTokenToStake([data.tokenId]);
     setIdx(index);
-    // setStakeBtn(!stakeBtn);
   };
   const handleClaim = (data, index) => {
     setTokenToClaim(data);
     setClaimIdx(index);
   };
 
-  function onChange(event, item) {
+  function onChange(event) {
     if (event.target.checked) {
       setSelected([...selected, event.target.name]);
     } else {
@@ -235,13 +245,22 @@ const Mellowmen = () => {
       );
     }
   }
-  // const handleClose = () => setModal(false);
+
+  function onChangeClaim(event) {
+    if (event.target.checked) {
+      setSelectedClaim([...selectedClaim, event.target.name]);
+    } else {
+      setSelectedClaim((data) =>
+        data?.filter((currItem) => currItem !== event?.target?.name)
+      );
+    }
+  }
+  console.log(selectedClaim, "djkfghkjdfhk");
   return (
     <>
       {!account && (
         <Modal
           open={modal}
-          // onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -285,8 +304,6 @@ const Mellowmen = () => {
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Box
                 sx={{
-                  // width: "70%",
-
                   height: "100%",
                   backgroundColor: "rgba(0,0,0,.3)",
                   backdropFilter: "blur(10px)",
@@ -438,12 +455,25 @@ const Mellowmen = () => {
                             }}
                             style={{ position: "relative" }}
                           >
-                            <img
-                              src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
-                              height="40%"
-                              width="50%"
-                              style={{ borderRadius: "10px" }}
-                            />
+                            <div style={{ position: "relative" }}>
+                              <img
+                                src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
+                                height="40%"
+                                width="50%"
+                                style={{ borderRadius: "10px" }}
+                              />{" "}
+                              <Checkbox
+                                {...label}
+                                color="success"
+                                name={data}
+                                sx={{
+                                  position: "absolute",
+                                  top: "0%",
+                                  left: "0%",
+                                }}
+                                onChange={(event) => onChangeClaim(event)}
+                              />
+                            </div>
 
                             <Typography
                               sx={{
@@ -504,6 +534,7 @@ const Mellowmen = () => {
                 >
                   <Button
                     variant="contained"
+                    onClick={claimMultiTokenReward}
                     sx={{
                       marginBottom: "15px",
                       marginRight: "15px",
@@ -514,7 +545,7 @@ const Mellowmen = () => {
                       },
                     }}
                   >
-                    Unstake Token (0)
+                    Claim Reward ({selectedClaim ? selectedClaim?.length : "0"})
                   </Button>
                 </Typography>
               </Box>
