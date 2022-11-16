@@ -284,12 +284,12 @@ const Mellowmen = () => {
 
           <MellowmenComp
             title1={`Your wallet : ${
-              account ? account.substring(0, 10) + "..." : "?"
+              account ? account.substring(0, 10) + "..." : ""
             }`}
             title2='RoobChronicle Staked :'
-            title3={`Earnings: ${
-              userUnlaimedReward ? userUnlaimedReward : "?"
-            }`}
+            title3={`Earnings : ${
+              userUnlaimedReward ? userUnlaimedReward : ""
+            } ROOB`}
             title4={`Reward rate : 15 ROOB/day`}
             // subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
             // subtitle2='15 ROOB/day'
@@ -348,6 +348,8 @@ const Mellowmen = () => {
                                 name={data.tokenId}
                                 sx={{
                                   position: "absolute",
+                                  fontWeight: "600",
+                                  color: "blue",
                                   top: {
                                     xl: "2%",
                                     lg: "2%",
@@ -390,6 +392,7 @@ const Mellowmen = () => {
                                   marginBottom: "10px",
                                   borderRadius: "5px",
                                   cursor: "pointer",
+                                  marginLeft: "2%",
                                 }}
                               >
                                 Stake Token
@@ -461,7 +464,7 @@ const Mellowmen = () => {
                 <Typography>
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
                     View Staked Tokens:{" "}
-                    {userStakedTokenList ? userStakedTokenList?.length : "?"}
+                    {userStakedTokenList ? userStakedTokenList?.length : ""}
                   </Typography>
                   <Grid container xl={12} lg={12} md={12} sm={12} xs={12}>
                     {userStakedTokenList?.length > 0 ? (
@@ -489,6 +492,7 @@ const Mellowmen = () => {
                                 name={data}
                                 sx={{
                                   position: "absolute",
+                                  color: "blue",
                                   top: {
                                     xl: "2%",
                                     lg: "2%",
@@ -532,6 +536,7 @@ const Mellowmen = () => {
                                   marginBottom: "10px",
                                   borderRadius: "5px",
                                   cursor: "pointer",
+                                  marginLeft: "2%",
                                 }}
                               >
                                 Claim Reward

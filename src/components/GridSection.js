@@ -472,12 +472,13 @@ const GridSection = () => {
                           <Btn
                             title='Show less'
                             onClick={() => handlerCardless(index)}
-                            style={{
-                              position: "absolute",
-                              bottom: "2%",
-
-                              width: "75%",
-                            }}
+                            style={
+                              {
+                                // position: "absolute",
+                                // bottom: "2%",
+                                // width: "75%",
+                              }
+                            }
                           />
                         ) : (
                           <Btn
