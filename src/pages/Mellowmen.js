@@ -287,10 +287,12 @@ const Mellowmen = () => {
               account ? account.substring(0, 10) + "..." : "?"
             }`}
             title2='RoobChronicle Staked :'
-            title3={`Earnings: `}
-            title4='Reward rate :'
-            subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
-            subtitle2='15 ROOB/day'
+            title3={`Earnings: ${
+              userUnlaimedReward ? userUnlaimedReward : "?"
+            }`}
+            title4={`Reward rate : 15 ROOB/day`}
+            // subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
+            // subtitle2='15 ROOB/day'
           />
           <Grid
             container
@@ -303,7 +305,6 @@ const Mellowmen = () => {
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Box
                 sx={{
-                  height: "400px",
                   backgroundColor: "rgba(0,0,0,.3)",
                   backdropFilter: "blur(10px)",
                   margin: "auto",
@@ -319,6 +320,7 @@ const Mellowmen = () => {
                     sm: "0px",
                     xs: "0px",
                   },
+                  height: "50vh",
                 }}
               >
                 <Typography>
@@ -335,7 +337,10 @@ const Mellowmen = () => {
                                 src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data.tokenId}.png`}
                                 height='40%'
                                 width='50%'
-                                style={{ borderRadius: "10px" }}
+                                style={{
+                                  borderRadius: "10px",
+                                  marginLeft: "4%",
+                                }}
                               />
                               <Checkbox
                                 {...label}
@@ -343,8 +348,20 @@ const Mellowmen = () => {
                                 name={data.tokenId}
                                 sx={{
                                   position: "absolute",
-                                  top: "0%",
-                                  left: "0%",
+                                  top: {
+                                    xl: "2%",
+                                    lg: "2%",
+                                    md: "1%",
+                                    sm: "1%",
+                                    xs: "1%",
+                                  },
+                                  left: {
+                                    xl: "4%",
+                                    lg: "2%",
+                                    md: "2%",
+                                    sm: "2%",
+                                    xs: "2%",
+                                  },
                                 }}
                                 onChange={(event) => onChange(event)}
                               />
@@ -355,6 +372,7 @@ const Mellowmen = () => {
                                 // marginBottom: "400px",
                                 padding: "10px",
                                 color: "#fff",
+                                marginLeft: "4%",
                               }}
                             >
                               {data.tokenId}
@@ -429,7 +447,6 @@ const Mellowmen = () => {
               <Box
                 sx={{
                   // width: "70%",
-                  height: "400px",
                   backgroundColor: "rgba(0,0,0,.3)",
                   backdropFilter: "blur(10px)",
                   margin: "auto",
@@ -437,6 +454,7 @@ const Mellowmen = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  height: "50vh",
                   overflowY: "auto",
                 }}
               >
@@ -460,7 +478,10 @@ const Mellowmen = () => {
                                 src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
                                 height='40%'
                                 width='50%'
-                                style={{ borderRadius: "10px" }}
+                                style={{
+                                  borderRadius: "10px",
+                                  marginLeft: "4%",
+                                }}
                               />{" "}
                               <Checkbox
                                 {...label}
@@ -468,8 +489,20 @@ const Mellowmen = () => {
                                 name={data}
                                 sx={{
                                   position: "absolute",
-                                  top: "0%",
-                                  left: "0%",
+                                  top: {
+                                    xl: "2%",
+                                    lg: "2%",
+                                    md: "1%",
+                                    sm: "1%",
+                                    xs: "1%",
+                                  },
+                                  left: {
+                                    xl: "4%",
+                                    lg: "2%",
+                                    md: "2%",
+                                    sm: "2%",
+                                    xs: "2%",
+                                  },
                                 }}
                                 onChange={(event) => onChangeClaim(event)}
                               />
@@ -481,6 +514,7 @@ const Mellowmen = () => {
                                 // marginBottom: "100px",
                                 padding: "10px",
                                 color: "#fff",
+                                marginLeft: "4%",
                               }}
                             >
                               {data}
