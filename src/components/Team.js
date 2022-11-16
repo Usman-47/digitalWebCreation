@@ -338,7 +338,7 @@ const Team = () => {
             width: "300px",
             position: "absolute",
             bottom: { lg: "10%", md: "-1%" },
-            right: { lg: "-10%", md: "1%" },
+            right: { lg: "-1%", md: "1%" },
             display: { md: "block", xs: "none", sm: "none" },
           }}
         />
