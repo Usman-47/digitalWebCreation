@@ -330,6 +330,7 @@ function Navbar(props) {
               className={`${classes.menu} ${
                 trigger === false ? "" : classes.appBarScrolledMenu
               }`}
+              disabled
             >
               <Link
                 to='/staking'
