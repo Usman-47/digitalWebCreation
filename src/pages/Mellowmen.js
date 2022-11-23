@@ -18,7 +18,6 @@ import Web3 from "web3";
 import axios from "axios";
 
 import contractAbi from "../abi.json";
-import baseContractAbi from "../baseContractAbi.json";
 
 const style = {
   position: "absolute",
@@ -66,12 +65,7 @@ const Mellowmen = () => {
   }
   const Contract = new web3.eth.Contract(
     contractAbi,
-    "0x557B92cb9B01442C8aacf38dCE832e65af38419B"
-  );
-
-  const baseContract = new web3.eth.Contract(
-    baseContractAbi,
-    "0x9294b5Bce53C444eb78B7BD9532D809e9b9cD123"
+    "0x7389FfBd4C23707766a274edD051F8596cfbe196"
   );
 
   const classes = useStyles();

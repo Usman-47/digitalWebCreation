@@ -74,3 +74,92 @@ code {
 i {
   color: #fff;
 }
+.cardBG {
+  background-image: url("/public/Vector1.png");
+  background-repeat: no-repeat;
+  /* height: 351.61px;
+  width: 263px; */
+}
+.MuiLinearProgress-bar {
+  background-color: #573bfe !important;
+}
+.stakingCard {
+  clip-path: polygon(
+    0 0,
+    88% 0,
+    100% 8%,
+    100% 91%,
+    89% 100%,
+    0 100%,
+    0% 80%,
+    0% 20%
+  );
+}
+.stakingBox {
+  border: 1px solid rgb(88, 226, 88);
+}
+.cardParent {
+  -webkit-border-radius: 0px 40px 40px 0px;
+  -moz-border-radius: 0px 40px 40px 0px;
+  border-radius: 0px 40px 40px 0px;
+  /* background-image: url("/public/Vector1.png");
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 0,
+    100% 89%,
+    87% 100%,
+    0 98%,
+    0 98%,
+    0 0
+  ); */
+}
+.stakingIMG {
+  clip-path: polygon(
+    0 0,
+    89% 0,
+    100% 11%,
+    100% 80%,
+    100% 100%,
+    0 100%,
+    0% 80%,
+    0% 20%
+  );
+}
+.MuiLinearProgress-root {
+  /* width: 79% !important; */
+}
+
+@media (max-width: 2560px) {
+  .stakingCard {
+    clip-path: polygon(
+      0 0,
+      88% 0,
+      100% 8%,
+      100% 91%,
+      89% 100%,
+      0 100%,
+      0% 80%,
+      0% 20%
+    );
+    height: 800px !important;
+  }
+}
+@media (max-width: 1650px) {
+  .stakingCard {
+    clip-path: polygon(
+      0 0,
+      88% 0,
+      100% 8%,
+      100% 91%,
+      89% 100%,
+      0 100%,
+      0% 80%,
+      0% 20%
+    );
+    height: 550px !important;
+  }
+}

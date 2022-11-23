@@ -3,6 +3,7 @@ import background from "./assets/Media/background.png";
 import bg1 from "./assets/Media/bg1.png";
 import footer from "./assets/Media/footer.png";
 import skatingBG from "./assets/Media/skatingBG.png";
+import Vector1 from "./assets/Media/Vector1.png";
 const useStyles = makeStyles((theme) => ({
   // root: {
   //   boxShadow: "none",
@@ -26,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     width: "100%",
+  },
+  CardBG: {
+    backgroundImage: `url(${Vector1})`,
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    // backgroundSize: "cover",
+    height: "500px",
   },
   skating: {
     backgroundImage: `url(${skatingBG})`,
@@ -179,6 +187,10 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     color: "#fff",
+  },
+  NewStaking: {
+    // background:linear-gradient
+    backgroundColor: "#04212B",
   },
 }));
 export default useStyles;
