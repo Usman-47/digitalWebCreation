@@ -10,7 +10,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useStyles from "../styles";
 import LinearProgress, {
@@ -19,8 +19,17 @@ import LinearProgress, {
 import Footer from "../components/Footer";
 import CheckIcon from "@mui/icons-material/Check";
 import NewNav from "../components/NewNav";
+import { injected } from "../wallet/connectors";
+import { useWeb3React } from "@web3-react/core";
+import Web3 from "web3";
+import axios from "axios";
+
+import contractAbi from "../abi.json";
 
 const NewStaking = () => {
+  const { active, account, library, connector, activate, deactivate } =
+    useWeb3React();
+
   const stakes = [
     {
       image: "/stakingIMG.png",
@@ -71,15 +80,207 @@ const NewStaking = () => {
       btnTitle: "Collect",
     },
   ];
+
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const classes = useStyles();
+
+  const [tokenToStake, setTokenToStake] = useState();
+  const [tokenToClaim, setTokenToClaim] = useState();
+  const [userRoobBalance, setUserRoobBalance] = useState();
+  const [totalPaidAmount, setTotalPaidAmount] = useState();
+  const [userTotalNumberOfToken, setUserTotalNumberOfToken] = useState();
+  const [userTokenData, setUserTokenData] = useState([]);
+  const [userStakedTokenList, setUserStakedTokenList] = useState();
+  const [checkStakedToken, setCheckStakedToken] = useState();
+  const [idx, setIdx] = useState();
+  const [claimIdx, setClaimIdx] = useState();
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState([]);
+  const [selectedClaim, setSelectedClaim] = useState([]);
+  const [modal, setModal] = useState(true);
+  const [userUnlaimedReward, setUserUnlaimedReward] = useState();
+  let web3 = new Web3(window?.web3?.currentProvider);
+  if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+    //console.log(web3, "web 3 console")
+  } else {
+    web3 = new Web3(
+      new Web3.providers.HttpProvider(process.env.REACT_APP_PROVIDER_URL)
+    );
+  }
+  const Contract = new web3.eth.Contract(
+    contractAbi,
+    "0x52ebc67d01cB420Aa56726fEa7A72aCc3De9A75C"
+  );
+
+  const getUserToken = async () => {
+    let res = await axios.get(
+      `https://api.rarible.org/v0.1/items/byOwner/?owner=ETHEREUM:${account}`
+    );
+    var count = 0;
+    var tempArray = [];
+    if (res.data) {
+      res.data.items.map((data) => {
+        let specificIndex = data.contract.indexOf(":");
+        let result = data.contract.slice(specificIndex + 1);
+        if (result === "0x9294b5bce53c444eb78b7bd9532d809e9b9cd123") {
+          tempArray.push({
+            tokenId: data.tokenId,
+            imageUrl: data.meta.content[0].url,
+          });
+          count += 1;
+        }
+      });
+      setOpen(false);
+      setUserTotalNumberOfToken(count);
+      setUserTokenData(tempArray);
+    }
+  };
+
+  const getUserRoobBalance = async () => {
+    let bal = await Contract.methods.balanceOf(account).call();
+    setUserRoobBalance(bal);
+  };
+
+  const getTotalPaid = async () => {
+    let totalPaid = await Contract.methods.totalPaidReward().call();
+    setTotalPaidAmount(totalPaid);
+  };
+
+  const checkUserReward = async () => {
+    let reward = await Contract.methods
+      .getUnclaimedRewardsAmountForSloothRoob(userStakedTokenList)
+      .call();
+    setUserUnlaimedReward(reward);
+  };
+
+  const getUserStakedToken = async () => {
+    setOpen(true);
+    let result = await Contract.methods.getUserStakedToken(account).call();
+    setUserStakedTokenList(result);
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (account) {
+      setOpen(true);
+      getUserToken();
+      getUserRoobBalance();
+      getTotalPaid();
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (userStakedTokenList && userTotalNumberOfToken) {
+      checkUserReward();
+      setUserTokenData((data) =>
+        data.filter(
+          (filterData) => !userStakedTokenList.includes(filterData.tokenId)
+        )
+      );
+    }
+  }, [userTotalNumberOfToken, userStakedTokenList]);
+
+  useEffect(() => {
+    if (userTotalNumberOfToken) {
+      getUserStakedToken();
+    }
+  }, [userTotalNumberOfToken, checkStakedToken]);
+
+  const stakeToken = async () => {
+    if (!account) {
+      alert("please connect wallet first");
+      return;
+    }
+    if (!tokenToStake) {
+      alert("please enter to token number to stake");
+      return;
+    }
+    await Contract.methods.stakeToken(selected).send({
+      from: account,
+      // from: "0xF1d3217f5D8368248E9AfBAd25e5396b5a93599b",
+      // value: web3.utils.toWei("0", "ether"),
+    });
+    setCheckStakedToken(!checkStakedToken);
+  };
+
+  const stakeMultipleToken = async () => {
+    if (!account) {
+      alert("please connect wallet first");
+      return;
+    }
+    if (!selected || selected?.length == 0) {
+      alert("please Select token to stake");
+      return;
+    }
+    await Contract.methods.stakeToken(selected).send({
+      from: account,
+    });
+    setCheckStakedToken(!checkStakedToken);
+  };
+
+  const claimReward = async () => {
+    if (!tokenToClaim) {
+      alert("No token selected");
+      return;
+    }
+    if (!userUnlaimedReward || userUnlaimedReward <= 0) {
+      alert("You cannot claim reward, until the reward is greater then zero");
+      return;
+    }
+    await Contract.methods.claimRewardsForSloothRoob([tokenToClaim]).send({
+      from: account,
+    });
+  };
+
+  const claimMultiTokenReward = async () => {
+    if (!selectedClaim) {
+      alert("No token selected");
+      return;
+    }
+    if (!userUnlaimedReward || userUnlaimedReward <= 0) {
+      alert("You cannot claim reward, until the reward is greater then zero");
+      return;
+    }
+    await Contract.methods.claimRewardsForSloothRoob(selectedClaim).send({
+      from: account,
+    });
+  };
+  const handleStake = (data, index) => {
+    setTokenToStake([data.tokenId]);
+    setIdx(index);
+  };
+  const handleClaim = (data, index) => {
+    setTokenToClaim(data);
+    setClaimIdx(index);
+  };
+
+  function onChange(event) {
+    if (event.target.checked) {
+      setSelected([...selected, event.target.name]);
+    } else {
+      setSelected((data) =>
+        data.filter((currItem) => currItem !== event?.target?.name)
+      );
+    }
+  }
+
+  function onChangeClaim(event) {
+    if (event.target.checked) {
+      setSelectedClaim([...selectedClaim, event.target.name]);
+    } else {
+      setSelectedClaim((data) =>
+        data?.filter((currItem) => currItem !== event?.target?.name)
+      );
+    }
+  }
   return (
     <>
       <div
         className={classes.NewStaking}
         style={{ padding: "20px", paddingBottom: "8%" }}
       >
-        <NewNav connect='Connect Wallet' />
+        <NewNav connect="Connect Wallet" />
         {/* <Container> */}
         <Box
           style={{
@@ -87,7 +288,7 @@ const NewStaking = () => {
             margin: "auto",
           }}
         >
-          <Typography sx={{ color: "#fff", fontSize: "36px" }} variant='h3'>
+          <Typography sx={{ color: "#fff", fontSize: "36px" }} variant="h3">
             STAKING
           </Typography>
           <Box
@@ -96,7 +297,7 @@ const NewStaking = () => {
               borderRadius: "10px",
               // padding: "20px",
             }}
-            className='stakingBox'
+            className="stakingBox"
           >
             {/* <Container sx={{ backgroundColor: "#111" }}> */}
             <Grid
@@ -175,7 +376,7 @@ const NewStaking = () => {
                           },
                         }}
                       >
-                        15 Roobs
+                        {userTotalNumberOfToken ? userTotalNumberOfToken : 0}
                       </Typography>
                     </Box>
                   </Grid>
@@ -259,7 +460,9 @@ const NewStaking = () => {
                           },
                         }}
                       >
-                        5 Roobs
+                        {userStakedTokenList?.length > 0
+                          ? userStakedTokenList?.length
+                          : 0}
                       </Typography>
                     </Box>
                   </Grid>
@@ -351,11 +554,11 @@ const NewStaking = () => {
                               // },
                             }}
                           >
-                            9,842,865
+                            {userRoobBalance ? userRoobBalance / 10 ** 18 : 0}
                           </Typography>
                         </div>
                         <div style={{ marginLeft: "3px" }}>
-                          <img src='/Asset1.png' />
+                          <img src="/Asset1.png" />
                         </div>
                       </Box>
                     </Box>
@@ -454,12 +657,14 @@ const NewStaking = () => {
                                   // },
                                 }}
                               >
-                                954
+                                {userUnlaimedReward
+                                  ? (userUnlaimedReward / 10 ** 18).toFixed(5)
+                                  : 0}
                               </Typography>
                             </div>
 
                             <div style={{ marginLeft: "3px" }}>
-                              <img src='/Asset1.png' />
+                              <img src="/Asset1.png" />
                             </div>
                           </Box>
                         </Box>
@@ -478,7 +683,7 @@ const NewStaking = () => {
                         }}
                       >
                         <Button
-                          variant='contained'
+                          variant="contained"
                           sx={{
                             backgroundColor: "#573BFE",
                             padding: "10px",
@@ -579,11 +784,11 @@ const NewStaking = () => {
                           // },"
                         }}
                       >
-                        9,842,865
+                        {totalPaidAmount ? totalPaidAmount / 10 ** 18 : 0}
                       </Typography>
                     </div>
                     <div>
-                      <img src='/Asset1.png' style={{ marginLeft: "3px" }} />
+                      <img src="/Asset1.png" style={{ marginLeft: "3px" }} />
                     </div>
                   </Box>
                 </Box>
@@ -606,7 +811,7 @@ const NewStaking = () => {
               {stakes.map((stake, index) => (
                 <Grid item xl={3} lg={3} md={3} sm={6} xs={12}>
                   <Box
-                    className='cardParent'
+                    className="cardParent"
                     style={{
                       padding: "10px",
                       marginTop: "10%",
@@ -628,7 +833,7 @@ const NewStaking = () => {
                         position: "relative",
                         border: "1px solid #573BFE",
                       }}
-                      className='stakingCard'
+                      className="stakingCard"
                     >
                       {/* <CardMedia
                     component='img'
@@ -646,7 +851,7 @@ const NewStaking = () => {
                         >
                           <Checkbox
                             {...label}
-                            color='success'
+                            color="success"
                             sx={{ color: "blue" }}
                           />
                         </div>
@@ -658,8 +863,8 @@ const NewStaking = () => {
                       <CardContent>
                         <Typography
                           gutterBottom
-                          variant='h5'
-                          component='div'
+                          variant="h5"
+                          component="div"
                           sx={{
                             color: "#fff",
                             fontSize: "12px",
@@ -695,7 +900,7 @@ const NewStaking = () => {
                                 </div>
                                 <div>
                                   <img
-                                    src='/Asset1.png'
+                                    src="/Asset1.png"
                                     style={{ marginLeft: "3px" }}
                                   />
                                 </div>
@@ -703,7 +908,7 @@ const NewStaking = () => {
                             </Grid>
                           </Grid>
                           <LinearProgress
-                            variant='determinate'
+                            variant="determinate"
                             value={90}
                             sx={{ color: "red" }}
                           />
@@ -733,7 +938,7 @@ const NewStaking = () => {
                       )}
                       <CardActions>
                         <Button
-                          size='small'
+                          size="small"
                           sx={{
                             color: "#fff",
                             width: "100%",
@@ -747,7 +952,7 @@ const NewStaking = () => {
                               backgroundColor: "#4AFD93",
                             },
                           }}
-                          variant='contained'
+                          variant="contained"
                         >
                           {stake.btnTitle}
                         </Button>
@@ -758,7 +963,7 @@ const NewStaking = () => {
               ))}
             </Grid>
             <Button
-              variant='contained'
+              variant="contained"
               sx={{
                 position: "absolute ",
                 right: { lg: "10%", md: "10%", sm: "20%", xs: "20%" },
