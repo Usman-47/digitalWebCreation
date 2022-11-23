@@ -18,7 +18,6 @@ import Web3 from "web3";
 import axios from "axios";
 
 import contractAbi from "../abi.json";
-import baseContractAbi from "../baseContractAbi.json";
 
 const style = {
   position: "absolute",
@@ -66,12 +65,7 @@ const Mellowmen = () => {
   }
   const Contract = new web3.eth.Contract(
     contractAbi,
-    "0x557B92cb9B01442C8aacf38dCE832e65af38419B"
-  );
-
-  const baseContract = new web3.eth.Contract(
-    baseContractAbi,
-    "0x9294b5Bce53C444eb78B7BD9532D809e9b9cD123"
+    "0x7389FfBd4C23707766a274edD051F8596cfbe196"
   );
 
   const classes = useStyles();
@@ -280,17 +274,19 @@ const Mellowmen = () => {
         </Backdrop>
         {/* backgroundColor: "rgba(0,0,0,0.5)", this goes below*/}
         <div style={{ paddingBottom: "50px" }}>
-          <Navbar connect="Connect Walllet" />
+          <Navbar connect="Connect Wallet" />
 
           <MellowmenComp
             title1={`Your wallet : ${
-              account ? account.substring(0, 10) + "..." : "?"
+              account ? account.substring(0, 10) + "..." : ""
             }`}
             title2="RoobChronicle Staked :"
-            title3={`Earnings: `}
-            title4="Reward rate :"
-            subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
-            subtitle2="15 ROOB/day"
+            title3={`Earnings : ${
+              userUnlaimedReward ? userUnlaimedReward : ""
+            } ROOB`}
+            title4={`Reward rate : 15 ROOB/day`}
+            // subtitle1={userUnlaimedReward ? userUnlaimedReward : "?"}
+            // subtitle2='15 ROOB/day'
           />
           <Grid
             container
@@ -303,7 +299,6 @@ const Mellowmen = () => {
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Box
                 sx={{
-                  height: "100%",
                   backgroundColor: "rgba(0,0,0,.3)",
                   backdropFilter: "blur(10px)",
                   margin: "auto",
@@ -311,6 +306,7 @@ const Mellowmen = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  overflowY: "auto",
                   marginLeft: {
                     xl: "30px",
                     lg: "30px",
@@ -318,6 +314,7 @@ const Mellowmen = () => {
                     sm: "0px",
                     xs: "0px",
                   },
+                  height: "50vh",
                 }}
               >
                 <Typography>
@@ -334,7 +331,10 @@ const Mellowmen = () => {
                                 src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data.tokenId}.png`}
                                 height="40%"
                                 width="50%"
-                                style={{ borderRadius: "10px" }}
+                                style={{
+                                  borderRadius: "10px",
+                                  marginLeft: "4%",
+                                }}
                               />
                               <Checkbox
                                 {...label}
@@ -342,8 +342,22 @@ const Mellowmen = () => {
                                 name={data.tokenId}
                                 sx={{
                                   position: "absolute",
-                                  top: "0%",
-                                  left: "0%",
+                                  fontWeight: "600",
+                                  color: "blue",
+                                  top: {
+                                    xl: "2%",
+                                    lg: "2%",
+                                    md: "1%",
+                                    sm: "1%",
+                                    xs: "1%",
+                                  },
+                                  left: {
+                                    xl: "4%",
+                                    lg: "2%",
+                                    md: "2%",
+                                    sm: "2%",
+                                    xs: "2%",
+                                  },
                                 }}
                                 onChange={(event) => onChange(event)}
                               />
@@ -354,6 +368,7 @@ const Mellowmen = () => {
                                 // marginBottom: "400px",
                                 padding: "10px",
                                 color: "#fff",
+                                marginLeft: "4%",
                               }}
                             >
                               {data.tokenId}
@@ -371,6 +386,7 @@ const Mellowmen = () => {
                                   marginBottom: "10px",
                                   borderRadius: "5px",
                                   cursor: "pointer",
+                                  marginLeft: "2%",
                                 }}
                               >
                                 Stake Token
@@ -428,8 +444,6 @@ const Mellowmen = () => {
               <Box
                 sx={{
                   // width: "70%",
-
-                  height: "100%",
                   backgroundColor: "rgba(0,0,0,.3)",
                   backdropFilter: "blur(10px)",
                   margin: "auto",
@@ -437,12 +451,14 @@ const Mellowmen = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  height: "50vh",
+                  overflowY: "auto",
                 }}
               >
                 <Typography>
                   <Typography sx={{ padding: "10px", color: "#fff" }}>
                     View Staked Tokens:{" "}
-                    {userStakedTokenList ? userStakedTokenList?.length : "?"}
+                    {userStakedTokenList ? userStakedTokenList?.length : ""}
                   </Typography>
                   <Grid container xl={12} lg={12} md={12} sm={12} xs={12}>
                     {userStakedTokenList?.length > 0 ? (
@@ -459,7 +475,10 @@ const Mellowmen = () => {
                                 src={`https://gateway.pinata.cloud/ipfs/QmebJdeiYf54XyzQc39aSvZPWz4d9qU8TvLD9D27sfT9Mm/${data}.png`}
                                 height="40%"
                                 width="50%"
-                                style={{ borderRadius: "10px" }}
+                                style={{
+                                  borderRadius: "10px",
+                                  marginLeft: "4%",
+                                }}
                               />{" "}
                               <Checkbox
                                 {...label}
@@ -467,8 +486,21 @@ const Mellowmen = () => {
                                 name={data}
                                 sx={{
                                   position: "absolute",
-                                  top: "0%",
-                                  left: "0%",
+                                  color: "blue",
+                                  top: {
+                                    xl: "2%",
+                                    lg: "2%",
+                                    md: "1%",
+                                    sm: "1%",
+                                    xs: "1%",
+                                  },
+                                  left: {
+                                    xl: "4%",
+                                    lg: "2%",
+                                    md: "2%",
+                                    sm: "2%",
+                                    xs: "2%",
+                                  },
                                 }}
                                 onChange={(event) => onChangeClaim(event)}
                               />
@@ -480,6 +512,7 @@ const Mellowmen = () => {
                                 // marginBottom: "100px",
                                 padding: "10px",
                                 color: "#fff",
+                                marginLeft: "4%",
                               }}
                             >
                               {data}
@@ -497,6 +530,7 @@ const Mellowmen = () => {
                                   marginBottom: "10px",
                                   borderRadius: "5px",
                                   cursor: "pointer",
+                                  marginLeft: "2%",
                                 }}
                               >
                                 Claim Reward

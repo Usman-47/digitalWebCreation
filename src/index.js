@@ -14,6 +14,7 @@ import Web3 from "web3";
 import { Web3Provider } from "@ethersproject/providers";
 import Mellowmen from "./pages/Mellowmen";
 import "semantic-ui-css/semantic.min.css";
+import NewStaking from "./pages/NewStaking";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
     path: "/staking",
     // element: <Staking />,
     element: <Mellowmen />,
+  },
+  {
+    path: "/sample",
+    // element: <Staking />,
+    element: <NewStaking />,
   },
 ]);
 function getLibrary(provider) {

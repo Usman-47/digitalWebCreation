@@ -58,7 +58,7 @@ function Navbar(props) {
           <ListItemButton>
             <ListItemText>
               <CloseIcon
-                color="#fff"
+                color='#fff'
                 sx={{ display: "flex", float: "right" }}
                 onClick={handleDrawerToggle}
               />
@@ -69,7 +69,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#home"
+                  to='/#home'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -97,7 +97,7 @@ function Navbar(props) {
                 onClick={handleDrawerToggle}
               >
                 <Link
-                  to="/staking"
+                  to='/staking'
                   style={{ textDecoration: "none", color: "#fff" }}
                   className={`${classes.menu} ${
                     trigger === false ? "" : classes.appBarScrolledMenu
@@ -115,7 +115,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#roadmap"
+                  to='/#roadmap'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -131,7 +131,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#collections"
+                  to='/#collections'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -147,7 +147,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#whitepapers"
+                  to='/#whitepapers'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -164,7 +164,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#faq"
+                  to='/#faq'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -180,7 +180,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#team"
+                  to='/#team'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -196,38 +196,31 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#contact"
+                  to='/#contact'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
                   CONTACT
                 </Link>
               </Button>
+              <br />
               {props.connect && (
-                // <Button onClick={connect}>
-                //   <Typography
-                //     sx={{
-                //       fontWeight: "800",
-                //       fontSize: { xl: "16px", lg: "14px", md: "10px" },
-                //       paddingRight: { xl: "40px", lg: "20px", md: "1px" },
-                //       color: "#fff",
-                //       "&:hover": {
-                //         color: "#fff",
-                //       },
-                //       fontFamily: "Raleway-bolder",
-                //     }}
-                //   >
-                //     {props.connect}
-                //   </Typography>
-                // </Button>
-                <a
-                  className="solbutton"
-                  href="https://metamask.app.link/dapp/digitalwebcreation.com/staking"
-                >
-                  <button variant="" className="solbutton mx-auto">
-                    Connect Walllet
-                  </button>
-                </a>
+                <Button onClick={connect}>
+                  <Typography
+                    sx={{
+                      fontWeight: "800",
+                      fontSize: { xl: "16px", lg: "14px", md: "10px" },
+                      paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                      color: "#fff",
+                      "&:hover": {
+                        color: "#fff",
+                      },
+                      fontFamily: "Raleway-bolder",
+                    }}
+                  >
+                    {props.connect}
+                  </Typography>
+                </Button>
               )}
             </ListItemText>
           </ListItemButton>
@@ -240,9 +233,9 @@ function Navbar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", marginBottom: "20px" }}>
+    <Box sx={{ display: "flex" }}>
       <AppBar
-        component="nav"
+        component='nav'
         sx={{
           boxShadow: "none",
           backgroundColor: "transparent",
@@ -257,8 +250,8 @@ function Navbar(props) {
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
           <Typography
-            variant="h6"
-            component="div"
+            variant='h6'
+            component='div'
             sx={{
               flexGrow: 1,
               display: { xs: "none", sm: "block" },
@@ -266,9 +259,9 @@ function Navbar(props) {
               paddingTop: "10px",
             }}
           >
-            <img src={logo} height="70px" width="130px" />
+            <img src={logo} height='70px' width='130px' />
           </Typography>
-          <IconButton color="inherit" size="small" aria-label="open drawer">
+          <IconButton color='inherit' size='small' aria-label='open drawer'>
             <MenuIcon
               onClick={handleDrawerToggle}
               sx={{
@@ -283,7 +276,7 @@ function Navbar(props) {
           >
             <Button>
               <Link
-                to="/#home"
+                to='/#home'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -294,6 +287,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -313,7 +307,7 @@ function Navbar(props) {
               }}
             >
               <Link
-                to="/#home"
+                to='/#home'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -324,6 +318,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -341,7 +336,7 @@ function Navbar(props) {
               disabled
             >
               <Link
-                to="/staking"
+                to='/staking'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -352,6 +347,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -364,7 +360,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#roadmap"
+                to='/#roadmap'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -375,6 +371,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -388,7 +385,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#collections"
+                to='/#collections'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -399,6 +396,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -411,7 +409,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#whitepapers"
+                to='/#whitepapers'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -422,6 +420,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -435,7 +434,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#faq"
+                to='/#faq'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -446,6 +445,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -458,7 +458,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#team"
+                to='/#team'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -469,6 +469,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -481,7 +482,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#contact"
+                to='/#contact'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -492,6 +493,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -509,7 +511,7 @@ function Navbar(props) {
                     fontWeight: "800",
                     fontSize: { xl: "16px", lg: "14px", md: "10px" },
                     paddingRight: { xl: "40px", lg: "20px", md: "1px" },
-                    color: "#04212B",
+                    color: "#fff",
                     "&:hover": {
                       color: "#fff",
                     },
@@ -523,10 +525,10 @@ function Navbar(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav">
+      <Box component='nav'>
         <Drawer
           container={container}
-          variant="temporary"
+          variant='temporary'
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
@@ -543,7 +545,7 @@ function Navbar(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component='main' sx={{ p: 3 }}>
         <Toolbar />
       </Box>
     </Box>
