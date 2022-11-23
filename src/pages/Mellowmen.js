@@ -280,7 +280,7 @@ const Mellowmen = () => {
         </Backdrop>
         {/* backgroundColor: "rgba(0,0,0,0.5)", this goes below*/}
         <div style={{ paddingBottom: "50px" }}>
-          <Navbar connect="Connect Wallet" />
+          <Navbar connect="Connect Walllet" />
 
           <MellowmenComp
             title1={`Your wallet : ${

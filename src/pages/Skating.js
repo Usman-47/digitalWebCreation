@@ -40,7 +40,7 @@ const Skating = () => {
                   }}
                 >
                   <Typography
-                    variant='h3'
+                    variant="h3"
                     sx={{
                       textAlign: "center",
                       color: "rgb(4,33,43,1)",
@@ -142,7 +142,7 @@ const Skating = () => {
                 }}
               >
                 <Button
-                  variant='contained'
+                  variant="contained"
                   sx={{
                     backgroundColor: "rgb(4,33,43,1)",
                     padding: "12px 28px",
@@ -183,7 +183,7 @@ const Skating = () => {
                   </Grid>
                   <Grid item lg={4} md={4} sm={4} xs={3}>
                     <input
-                      type='text'
+                      type="text"
                       value={value}
                       onChange={handleChange}
                       style={{
