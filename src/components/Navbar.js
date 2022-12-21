@@ -58,7 +58,7 @@ function Navbar(props) {
           <ListItemButton>
             <ListItemText>
               <CloseIcon
-                color="#fff"
+                color='#fff'
                 sx={{ display: "flex", float: "right" }}
                 onClick={handleDrawerToggle}
               />
@@ -69,7 +69,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#home"
+                  to='/#home'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -97,7 +97,7 @@ function Navbar(props) {
                 onClick={handleDrawerToggle}
               >
                 <Link
-                  to="/staking"
+                  to='/staking'
                   style={{ textDecoration: "none", color: "#fff" }}
                   className={`${classes.menu} ${
                     trigger === false ? "" : classes.appBarScrolledMenu
@@ -115,7 +115,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#roadmap"
+                  to='/#roadmap'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -131,7 +131,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#collections"
+                  to='/#collections'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -147,7 +147,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#whitepapers"
+                  to='/#whitepapers'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -164,7 +164,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#faq"
+                  to='/#faq'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -180,7 +180,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#team"
+                  to='/#team'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -196,7 +196,7 @@ function Navbar(props) {
                 }}
               >
                 <Link
-                  to="/#contact"
+                  to='/#contact'
                   style={{ textDecoration: "none", color: "#fff" }}
                   onClick={handleDrawerToggle}
                 >
@@ -221,10 +221,10 @@ function Navbar(props) {
                 //   </Typography>
                 // </Button>
                 <a
-                  className="solbutton"
-                  href="https://metamask.app.link/dapp/digitalwebcreation.com/staking"
+                  className='solbutton'
+                  href='https://metamask.app.link/dapp/digitalwebcreation.com/staking'
                 >
-                  <button variant="" className="solbutton mx-auto">
+                  <button variant='' className='solbutton mx-auto'>
                     Connect Walllet
                   </button>
                 </a>
@@ -242,7 +242,7 @@ function Navbar(props) {
   return (
     <Box sx={{ display: "flex", marginBottom: "20px" }}>
       <AppBar
-        component="nav"
+        component='nav'
         sx={{
           boxShadow: "none",
           backgroundColor: "transparent",
@@ -257,8 +257,8 @@ function Navbar(props) {
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
           <Typography
-            variant="h6"
-            component="div"
+            variant='h6'
+            component='div'
             sx={{
               flexGrow: 1,
               display: { xs: "none", sm: "block" },
@@ -266,9 +266,9 @@ function Navbar(props) {
               paddingTop: "10px",
             }}
           >
-            <img src={logo} height="70px" width="130px" />
+            <img src={logo} height='70px' width='130px' />
           </Typography>
-          <IconButton color="inherit" size="small" aria-label="open drawer">
+          <IconButton color='inherit' size='small' aria-label='open drawer'>
             <MenuIcon
               onClick={handleDrawerToggle}
               sx={{
@@ -283,7 +283,7 @@ function Navbar(props) {
           >
             <Button>
               <Link
-                to="/#home"
+                to='/#home'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -313,7 +313,7 @@ function Navbar(props) {
               }}
             >
               <Link
-                to="/#home"
+                to='/#home'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -338,10 +338,9 @@ function Navbar(props) {
               className={`${classes.menu} ${
                 trigger === false ? "" : classes.appBarScrolledMenu
               }`}
-              disabled
             >
               <Link
-                to="/staking"
+                to='/staking'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -364,7 +363,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#roadmap"
+                to='/#roadmap'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -388,7 +387,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#collections"
+                to='/#collections'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -411,7 +410,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#whitepapers"
+                to='/#whitepapers'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -435,7 +434,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#faq"
+                to='/#faq'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -458,7 +457,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#team"
+                to='/#team'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -481,7 +480,7 @@ function Navbar(props) {
             </Button>
             <Button>
               <Link
-                to="/#contact"
+                to='/#contact'
                 style={{ textDecoration: "none", color: "#04212b" }}
                 className={`${classes.menu} ${
                   trigger === false ? "" : classes.appBarScrolledMenu
@@ -523,10 +522,10 @@ function Navbar(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav">
+      <Box component='nav'>
         <Drawer
           container={container}
-          variant="temporary"
+          variant='temporary'
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
@@ -543,7 +542,7 @@ function Navbar(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component='main' sx={{ p: 3 }}>
         <Toolbar />
       </Box>
     </Box>

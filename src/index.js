@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   {
     path: "/staking",
     // element: <Staking />,
-    element: <Mellowmen />,
+    element: <NewStaking />,
   },
   {
     path: "/sample",
